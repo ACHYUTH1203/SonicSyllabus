@@ -52,21 +52,16 @@ The core of SonicSyllabus is built using **LangGraph**, orchestrating a state-aw
     
 *   OpenAI API Key
     
-
-#### **1\. Environment Setup**
+### **1\. Environment Setup**
 
 Create a .env file in the root directory:
 
-Code snippet
-
 Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   OPENAI_API_KEY=your_actual_key_here   `
 
-#### **2\. One-Command Execution**
+### **2\. One-Command Execution**
 
-The following command installs all dependencies, ingests the Constitutional data into your local vector database, and starts the web server:
-
-Bash
+The following command installs dependencies, ingests the Constitutional data into the vector database, and starts the server:
 
 Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   poetry install && poetry run python ingest.py && poetry run python app.py   `
 
-> **Note**: Once the server starts, open your browser and navigate to http://localhost:8000 to begin your revision session.
+> **Note:** Once the server starts, open your browser and go to[http://localhost:8000](http://localhost:8000) to begin your revision session.
