@@ -6,7 +6,7 @@
 
 - **Eyes-Free Revision**: Converts verified legal data into engaging 1-minute audio scripts.
 - **Zero Hallucination**: Employs a **Retrieval-Augmented Generation (RAG)** pipeline to ensure every word is grounded in the "Golden Data" of the Indian Constitution.
-- **Linguistic Inclusion**: Supports 13 languages — Hindi, Telugu, Tamil, Kannada, Malayalam, Marathi, Bengali, Gujarati, Punjabi, Odia, Assamese, and Urdu — with precise legal terminology.
+- **Linguistic Inclusion**: Supports 13 languages — Hindi, Telugu, Tamil, Kannada, Malayalam — with precise legal terminology.
 
 ---
 
