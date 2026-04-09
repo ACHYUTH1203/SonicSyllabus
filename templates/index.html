@@ -1,283 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SuperKalam Audio Mentor</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #e4e4e7 100%); }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-        .fade-enter { opacity: 0; transform: translateY(-10px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .fade-enter-active { opacity: 1; transform: translateY(0); }
-        .ai-glow { position: relative; display: flex; justify-content: center; align-items: center; height: 160px; }
-        .orb { position: absolute; border-radius: 50%; mix-blend-mode: multiply; filter: blur(20px); opacity: 0.85; transition: transform 0.1s ease-out; }
-        .thinking .orb-1 { width: 80px; height: 80px; background: #c084fc; animation: think-pulse 2s infinite alternate; }
-        .thinking .orb-2 { width: 100px; height: 100px; background: #60a5fa; animation: think-pulse 2s infinite alternate 0.5s; left: 35%; }
-        .thinking .orb-3 { width: 70px; height: 70px; background: #f472b6; animation: think-pulse 2s infinite alternate 1s; right: 35%; }
-        @keyframes think-pulse { 0% { transform: scale(0.85) translateY(5px); opacity: 0.5; } 100% { transform: scale(1.15) translateY(-5px); opacity: 0.9; } }
-        .speaking .orb-1 { width: 100px; height: 100px; background: #8b5cf6; }
-        .speaking .orb-2 { width: 120px; height: 120px; background: #3b82f6; left: 30%; }
-        .speaking .orb-3 { width: 90px; height: 90px; background: #ec4899; right: 30%; }
-        .hidden { display: none !important; }
-        audio::-webkit-media-controls-panel { background-color: #f3f4f6; border-radius: 1.5rem; }
-    </style>
-</head>
-<body class="flex items-center justify-center min-h-screen p-4 sm:p-8">
-
-    <div class="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white w-full max-w-md overflow-hidden relative">
-        
-        <div id="locked-state" class="hidden absolute inset-0 z-50 bg-white/70 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center rounded-[2.5rem]">
-            <div class="w-16 h-16 bg-gray-900 rounded-[1.2rem] flex items-center justify-center mb-5 shadow-xl rotate-3">
-                <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-            </div>
-            <h2 class="text-2xl font-extrabold text-gray-900 mb-2">Daily Limit Reached</h2>
-            <p class="text-sm text-gray-600 font-semibold mb-6">You've used your 5 free Kalam tokens for today. Come back tomorrow to continue your UPSC journey!</p>
-            <button onclick="location.reload()" class="px-6 py-3 bg-white border border-gray-200 hover:bg-gray-50 text-gray-800 font-bold rounded-xl transition-colors shadow-sm">Understood</button>
-        </div>
-
-        <div class="pt-8 pb-6 px-8 flex flex-col items-center text-center relative">
-            <div class="absolute top-6 border border-blue-200 bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">Module: Fundamental Rights</div>
-            <div class="w-16 h-16 mt-6 bg-gradient-to-tr from-blue-100 to-purple-50 rounded-[1.2rem] flex items-center justify-center shadow-inner relative overflow-hidden">
-                <svg class="w-8 h-8 text-blue-600 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                <div class="absolute top-1 right-1 w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full"></div>
-            </div>
-            <h1 class="text-2xl font-extrabold text-gray-900 mt-3 tracking-tight">Hi Aspirant</h1>
-            <p class="text-sm text-gray-500 font-semibold mt-1">Your AI Mentor Kalam is ready.</p>
-        </div>
-
-        <div class="px-8"><div class="h-px bg-gray-200/60 w-full"></div></div>
-
-        <div class="p-8 pt-6">
-            
-            <div id="form-state">
-                <div class="mb-5">
-                    <label class="block text-[12px] font-bold text-gray-400 uppercase tracking-wider mb-2">Audio Language</label>
-                    <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-                        <button onclick="selectLanguage('English', this)" class="lang-btn bg-gray-900 text-white border-transparent px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md whitespace-nowrap">English</button>
-                        <button onclick="selectLanguage('Hindi', this)" class="lang-btn bg-white text-gray-600 border border-gray-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all whitespace-nowrap">Hindi</button>
-                        <button onclick="selectLanguage('Telugu', this)" class="lang-btn bg-white text-gray-600 border border-gray-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all whitespace-nowrap">Telugu</button>
-                        <button onclick="selectLanguage('Kannada', this)" class="lang-btn bg-white text-gray-600 border border-gray-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all whitespace-nowrap">Kannada</button>
-                    </div>
-                    <input type="hidden" id="selected-language" value="English">
-                </div>
-
-                <div id="prompt-container" class="flex flex-wrap gap-2 mb-4">
-                    </div>
-
-                <div class="relative flex items-center shadow-sm rounded-[2rem] bg-gray-50 p-1 border border-gray-200 focus-within:border-blue-400 focus-within:bg-white transition-all duration-300">
-                    <input type="text" id="topic-input" placeholder="Ask about Articles 12-35..." 
-                        class="w-full bg-transparent border-none focus:ring-0 px-5 py-4 text-sm font-semibold text-gray-900 placeholder-gray-400 outline-none">
-                    
-                    <button onclick="startAudioGeneration()" class="absolute right-2 w-10 h-10 bg-gray-900 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-all active:scale-90 shadow-md">
-                        <svg class="w-4 h-4 translate-x-[-1px] translate-y-[1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19V6m0 0l-5 5m5-5l5 5"></path></svg>
-                    </button>
-                </div>
-            </div>
-
-            <div id="active-state" class="hidden text-center pb-4">
-                <h2 id="status-title" class="text-2xl font-extrabold text-gray-900 mb-1 tracking-tight">Kalam is thinking</h2>
-                <p id="status-subtitle" class="text-sm text-blue-600 mb-6 h-5 transition-opacity duration-300 font-semibold">Initializing Engine...</p>
-                
-                <div id="orb-container" class="ai-glow thinking mb-8">
-                    <div id="orb1" class="orb orb-1"></div>
-                    <div id="orb2" class="orb orb-2"></div>
-                    <div id="orb3" class="orb orb-3"></div>
-                </div>
-
-                <div id="player-controls" class="hidden flex flex-col items-center w-full fade-enter fade-enter-active">
-                    <audio id="audio-player" controls class="w-full outline-none shadow-sm rounded-full"></audio>
-                    <button onclick="resetUI()" class="mt-6 px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm rounded-full transition-colors">Ask another question</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // UUID / Rate Limiting Setup
-        let userId = localStorage.getItem('kalam_user_id');
-        if (!userId) {
-            userId = crypto.randomUUID();
-            localStorage.setItem('kalam_user_id', userId);
-        }
-
-        // Dynamic Constitution Prompts (Deep Cuts)
-        const deepCutPrompts = [
-            "Art. 14 Equality", "Habeas Corpus Writ", "Art. 21 Right to Life", 
-            "Mandamus Writ", "Abolition of Untouchability", "Minority Education Rights", 
-            "Exceptions to Free Speech", "Protection against Double Jeopardy",
-            "Art. 19 Freedoms", "Child Labor Prohibition"
-        ];
-
-        // Shuffle and inject 4 random prompts on page load
-        function loadRandomPrompts() {
-            const container = document.getElementById('prompt-container');
-            const shuffled = deepCutPrompts.sort(() => 0.5 - Math.random()).slice(0, 4);
-            container.innerHTML = shuffled.map(p => 
-                `<button onclick="typePrompt('${p}')" class="px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-full text-xs font-bold text-gray-600 hover:bg-gray-200 transition-colors">${p}</button>`
-            ).join('');
-        }
-        loadRandomPrompts();
-
-        let audioContext, analyser, source, animationFrameId;
-        const audioPlayer = document.getElementById('audio-player');
-        let loadingTimer, typingTimeout;
-
-        function selectLanguage(lang, element) {
-            document.getElementById('selected-language').value = lang;
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.className = "lang-btn bg-white text-gray-600 border border-gray-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all whitespace-nowrap";
-            });
-            element.className = "lang-btn bg-gray-900 text-white border-transparent px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md whitespace-nowrap";
-        }
-
-        function typePrompt(text) {
-            const input = document.getElementById('topic-input');
-            input.value = "";
-            clearTimeout(typingTimeout);
-            let i = 0;
-            function typeWriter() {
-                if (i < text.length) {
-                    input.value += text.charAt(i);
-                    i++;
-                    typingTimeout = setTimeout(typeWriter, 35);
-                }
-            }
-            typeWriter();
-        }
-
-        function resetUI() {
-             document.getElementById('form-state').classList.remove('hidden');
-             document.getElementById('active-state').classList.add('hidden');
-             document.getElementById('player-controls').classList.add('hidden');
-             document.getElementById('orb-container').className = 'ai-glow thinking';
-             document.getElementById('topic-input').value = "";
-             audioPlayer.src = "";
-             clearInterval(loadingTimer);
-             if (animationFrameId) cancelAnimationFrame(animationFrameId);
-             loadRandomPrompts(); // Reshuffle prompts for a fresh look!
-        }
-
-        function startLoadingSequence(language) {
-            const steps = ["Validating Constitution Scope...", "Searching Vector DB...", "Analyzing legal precedents...", "Drafting the mentor script..."];
-            if (language !== "English") steps.push(`Translating to ${language}...`);
-            steps.push("Synthesizing Kalam's voice...");
-
-            let currentStep = 0;
-            const subtitle = document.getElementById('status-subtitle');
-            subtitle.innerText = steps[0];
-            
-            loadingTimer = setInterval(() => {
-                if (currentStep < steps.length - 1) {
-                    currentStep++;
-                    subtitle.style.opacity = 0;
-                    setTimeout(() => { subtitle.innerText = steps[currentStep]; subtitle.style.opacity = 1; }, 300);
-                } else clearInterval(loadingTimer);
-            }, 2500); 
-        }
-
-        async function startAudioGeneration() {
-            const topic = document.getElementById('topic-input').value;
-            const language = document.getElementById('selected-language').value;
-
-            if(!topic) { document.getElementById('topic-input').focus(); return; }
-
-            document.getElementById('form-state').classList.add('hidden');
-            document.getElementById('active-state').classList.remove('hidden');
-            document.getElementById('status-title').innerText = "Kalam is thinking";
-            document.getElementById('orb-container').className = 'ai-glow thinking';
-            
-            startLoadingSequence(language);
-
-            try {
-                const response = await fetch('/api/generate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ topic: topic, language: language, user_id: userId }) // Sending UUID!
-                });
-
-                const data = await response.json();
-                clearInterval(loadingTimer);
-
-                if(response.ok) {
-                    document.getElementById('status-title').innerText = "Kalam is speaking";
-                    document.getElementById('status-subtitle').innerText = `Explaining in ${language}`;
-                    document.getElementById('player-controls').classList.remove('hidden');
-                    
-                    audioPlayer.src = data.audio_url;
-                    setupAudioVisualizer();
-                    audioPlayer.play();
-                } else {
-                    // Handle Rate Limit specifically
-                    if (response.status === 429) {
-                        document.getElementById('locked-state').classList.remove('hidden');
-                        document.getElementById('active-state').classList.add('hidden');
-                    } else {
-                        // Handle Guardrail or other errors gracefully
-                        alert(data.detail);
-                        resetUI();
-                    }
-                }
-            } catch (error) {
-                clearInterval(loadingTimer);
-                alert("Network error. Please make sure the backend is running.");
-                resetUI();
-            }
-        }
-
-        function setupAudioVisualizer() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioContext.createAnalyser();
-                analyser.fftSize = 256; 
-                source = audioContext.createMediaElementSource(audioPlayer);
-                source.connect(analyser);
-                analyser.connect(audioContext.destination);
-            }
-
-            const dataArray = new Uint8Array(analyser.frequencyBinCount);
-            const orb1 = document.getElementById('orb1'), orb2 = document.getElementById('orb2'), orb3 = document.getElementById('orb3');
-            document.getElementById('orb-container').className = 'ai-glow speaking';
-
-            function renderFrame() {
-                animationFrameId = requestAnimationFrame(renderFrame);
-                if (audioPlayer.paused || audioPlayer.ended) {
-                    orb1.style.transform = `scale(1)`; orb2.style.transform = `scale(1)`; orb3.style.transform = `scale(1)`;
-                    return;
-                }
-                analyser.getByteFrequencyData(dataArray);
-                let sum = dataArray.slice(0, 127).reduce((a, b) => a + b, 0);
-                let scale = 1 + ((sum / 127) / 255) * 0.7;
-
-                orb1.style.transform = `scale(${scale})`;
-                orb2.style.transform = `scale(${scale * 0.9})`;
-                orb3.style.transform = `scale(${scale * 1.1})`;
-            }
-            renderFrame();
-        }
-
-        audioPlayer.addEventListener('play', () => {
-            if(audioContext && audioContext.state === 'suspended') audioContext.resume();
-            document.getElementById('orb-container').className = 'ai-glow speaking';
-            document.getElementById('status-title').innerText = "Kalam is speaking";
-        });
-
-        audioPlayer.addEventListener('pause', () => {
-            document.getElementById('orb-container').className = 'ai-glow thinking';
-            document.getElementById('status-title').innerText = "Paused";
-        });
-
-        audioPlayer.addEventListener('ended', () => {
-            document.getElementById('status-title').innerText = "Revision Complete";
-            document.getElementById('status-subtitle').innerText = "Ask another question below.";
-            document.getElementById('orb-container').className = 'ai-glow thinking'; 
-        });
-    </script>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -314,7 +34,7 @@
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 sm:p-8">
 
-    <div class="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white w-full max-w-md overflow-hidden relative transition-all duration-500">
+    <div class="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white w-full max-w-xl overflow-hidden relative transition-all duration-500">
         
         <div id="locked-state" class="hidden absolute inset-0 z-50 bg-white/70 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center rounded-[2.5rem]">
             <div class="w-16 h-16 bg-gray-900 rounded-[1.2rem] flex items-center justify-center mb-5 shadow-xl rotate-3">
@@ -351,7 +71,7 @@
                         <button onclick="selectLanguage('Hindi')" class="lang-btn snap-start shrink-0 bg-white text-gray-600 border border-gray-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all">Hindi</button>
                         <button onclick="selectLanguage('Telugu')" class="lang-btn snap-start shrink-0 bg-white text-gray-600 border border-gray-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all">Telugu</button>
                         <button onclick="selectLanguage('Kannada')" class="lang-btn snap-start shrink-0 bg-white text-gray-600 border border-gray-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all">Kannada</button>
-                        
+                        <button onclick="selectLanguage('Malayalam')" class="lang-btn snap-start shrink-0 bg-white text-gray-600 border border-gray-200 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-all">Malayalam</button>
                     </div>
                     <input type="hidden" id="selected-language" value="English">
                 </div>
@@ -359,8 +79,8 @@
                 <div id="prompt-container" class="flex flex-wrap gap-2 mb-4"></div>
 
                 <div class="relative flex items-center shadow-sm rounded-[2rem] bg-gray-50 p-1 border border-gray-200 focus-within:border-blue-400 focus-within:bg-white transition-all duration-300">
-                    <input type="text" id="topic-input" placeholder="Ask about Articles 12-35..." 
-                        class="w-full bg-transparent border-none focus:ring-0 px-5 py-4 text-sm font-semibold text-gray-900 placeholder-gray-400 outline-none"
+                    <input type="text" id="topic-input" placeholder="Ask about Articles 12-35..."
+                        class="w-full bg-transparent border-none focus:ring-0 pl-5 pr-14 py-4 text-sm font-semibold text-gray-900 placeholder-gray-400 outline-none"
                         onkeypress="if(event.key === 'Enter') startAudioGeneration()">
                     <button onclick="startAudioGeneration()" class="absolute right-2 w-10 h-10 bg-gray-900 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-all active:scale-90 shadow-md">
                         <svg class="w-4 h-4 translate-x-[-1px] translate-y-[1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19V6m0 0l-5 5m5-5l5 5"></path></svg>
@@ -400,11 +120,25 @@
         let userId = localStorage.getItem('kalam_user_id') || crypto.randomUUID();
         localStorage.setItem('kalam_user_id', userId);
 
-        const deepCutPrompts = ["Art. 14 Equality", "Habeas Corpus", "Art. 21 Life", "Writ of Mandamus"];
+        const deepCutPrompts = [
+            { label: "Art. 14",         full: "What is the Right to Equality under Article 14 and how does it apply?" },
+            { label: "Habeas Corpus",   full: "What is Habeas Corpus and when can a court issue it?" },
+            { label: "Art. 21",         full: "What rights are protected under Article 21 Right to Life and Personal Liberty?" },
+            { label: "Mandamus",        full: "When is the Writ of Mandamus issued and what is its purpose?" },
+            { label: "Art. 17",         full: "How does Article 17 abolish untouchability and what penalties apply?" },
+            { label: "Minorities",      full: "What educational and cultural rights do minorities have under Articles 29 and 30?" },
+            { label: "Free Speech",     full: "What are the reasonable restrictions on freedom of speech under Article 19?" },
+            { label: "Double Jeopardy", full: "What is the protection against double jeopardy and self-incrimination under Article 20?" },
+            { label: "Art. 32",         full: "Why is Article 32 called the heart and soul of the Constitution?" },
+            { label: "Child Labour",    full: "How do Articles 23 and 24 protect children and prohibit forced labour?" },
+        ];
+        let activePrompts = [];
         function loadRandomPrompts() {
             const container = document.getElementById('prompt-container');
-            const shuffled = deepCutPrompts.sort(() => 0.5 - Math.random()).slice(0, 3);
-            container.innerHTML = shuffled.map(p => `<button onclick="typePrompt('${p}')" class="px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-full text-[11px] font-bold text-gray-600 hover:bg-gray-200 transition-colors">${p}</button>`).join('');
+            activePrompts = [...deepCutPrompts].sort(() => 0.5 - Math.random()).slice(0, 4);
+            container.innerHTML = activePrompts.map((p, i) =>
+                `<button onclick="typePrompt(${i})" class="px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-full text-[11px] font-bold text-gray-600 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700 transition-colors">${p.label}</button>`
+            ).join('');
         }
         loadRandomPrompts();
 
@@ -419,7 +153,8 @@
         const audioPlayer = document.getElementById('audio-player');
         let loadingTimer;
 
-        function typePrompt(text) {
+        function typePrompt(index) {
+            const text = activePrompts[index].full;
             const input = document.getElementById('topic-input'); input.value = ""; clearTimeout(typingTimeout);
             let i = 0;
             function write() { if (i < text.length) { input.value += text.charAt(i); i++; typingTimeout = setTimeout(write, 35); } else input.focus(); }

@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from langgraph.graph import StateGraph, END
 from state import GraphState
 from nodes.retrieve_node import retrieve
+from nodes.grade_node import grade_documents
 from nodes.generate_node import generate_english_script
 from nodes.translate_node import translate_script
 from nodes.guardrail_node import check_scope
@@ -51,6 +52,7 @@ def build_and_run_graph(user_query: str, language: str):
     
     workflow.add_node("guardrail", check_scope)
     workflow.add_node("retrieve", retrieve)
+    workflow.add_node("grade_documents", grade_documents)
     workflow.add_node("generate_english", generate_english_script)
     workflow.add_node("translate_dynamic", translate_script)
     
@@ -66,7 +68,8 @@ def build_and_run_graph(user_query: str, language: str):
         }
     )
 
-    workflow.add_edge("retrieve", "generate_english")
+    workflow.add_edge("retrieve", "grade_documents")
+    workflow.add_edge("grade_documents", "generate_english")
     
     workflow.add_conditional_edges(
         "generate_english", 

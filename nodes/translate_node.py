@@ -28,6 +28,7 @@ CRITICAL: This text will be fed directly into a Text-to-Speech (TTS) engine.
 2. Spell out numbers, percentages, and dates naturally as they are spoken in {target_language}.
 3. Use commas and periods strategically to force natural breathing pauses for the AI voice.
 4. Keep sentences relatively short.
+5. WORD LIMIT: The translated script MUST stay under 140 words. {target_language} translations can run longer than English — actively trim less critical phrases to maintain brevity.
 </audio_formatting_constraints>
 
 Take a deep breath and translate the script accurately."""
